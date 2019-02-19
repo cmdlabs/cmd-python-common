@@ -1,0 +1,21 @@
+image: cmdsolutions/cmdline:bleeding
+
+stages:
+  - build
+
+build:
+  stage: build
+  script:
+    - python --version
+    - yum install -y gcc-c++
+    - virtualenv .
+    - source bin/activate && pip install --upgrade pip
+    - source bin/activate && pip install -r requirements.txt
+    - source bin/activate && pylint --rcfile=pydistutils.cfg runcmd
+    - source bin/activate && python setup.py sdist bdist_wheel bdist
+  artifacts:
+    paths:
+    - "dist/*.whl"
+    - "dist/*.tar.gz"
+    expire_in: "50 years" # Default expiry is 30 days, so need to set it for a high value.
+  tags: [local-runner, linux, cmdlab]
