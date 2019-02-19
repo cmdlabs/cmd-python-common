@@ -1,0 +1,11 @@
+*.pyc
+*.egg*
+dist
+__pycache__
+build
+bin
+include
+lib
+lib64
+pip-selfcheck.json
+.DS_Store
