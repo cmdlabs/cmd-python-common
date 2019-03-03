@@ -38,12 +38,15 @@ def send_log(log_group_name, log_stream_name, message, region=DEFAULT_REGION):
     payload = {
         "logGroupName": log_group_name,
         "logStreamName": log_stream_name,
-        "sequenceToken": token,
         "logEvents": [{
             "timestamp": int(round(time.time() * 1000)),
             "message": message
         }]
     }
+    if token:
+        # On a newly created stream the token will be missing and you cannot
+        # send a none value.
+        payload["sequenceToken"] = token
     get_client("logs", region=region).put_log_events(**payload)
 
 def create_log_stream(log_group_name, log_stream_name, region=DEFAULT_REGION):
