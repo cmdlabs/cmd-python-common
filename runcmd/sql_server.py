@@ -12,7 +12,7 @@ class ExecuteStoredProcedure(object): # pylint: disable=too-many-instance-attrib
     Helper class to execute stored procedures in spark.
     """
 
-    def __init__(self, spark, url, database_host, database, tmp_table, sp_name, sp_params, username, # pylint: disable=too-many-arguments
+    def __init__(self, spark, url, database_host, database, tmp_table, sp_name, sp_params, username, # pylint: disable=too-many-arguments,too-many-locals
                  ssm_password, output_bucket, output_path, glue_table, mode="overwrite",
                  skip_errors=None):
         """
@@ -65,7 +65,7 @@ class ExecuteStoredProcedure(object): # pylint: disable=too-many-instance-attrib
             LOG.exception("MSSQL Operation Error occurred %s" % exp)
             # Check any errors that need to be skipped
             if isinstance(self.skip_errors, list):
-                skip_error_result = filter(lambda x: x in exp.message, self.skip_errors)
+                skip_error_result = filter(lambda x: x in exp.message, self.skip_errors) # pylint: disable=no-member
                 if  skip_error_result:
                     LOG.info("Known error and it may be skipped: %s " % exp)
 

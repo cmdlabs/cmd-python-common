@@ -4,8 +4,7 @@ Process to remove S3 object tags from a prefix.
 from runcmd import generate_args, s3 as S3
 from runcmd.logging_helper import get_logger
 
-JOB_NAME = "s3_tag_removal"
-LOGGER = get_logger(JOB_NAME)
+LOGGER = get_logger(__name__)
 
 def main():
     """
