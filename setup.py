@@ -48,9 +48,9 @@ setup(
         'Intended Audience :: Developers',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.6',
-        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.6',
     ],
     description="CMD commoun python modules and function used for all the client projects",
     long_description=readme(),
@@ -61,7 +61,6 @@ setup(
     install_requires=[
         'boto3==1.9.62',
         'pyspark==2.4.0',
-        'pymssql==2.1.1',
         'pandas==0.23.4',
         'requests==2.21.0'
     ],

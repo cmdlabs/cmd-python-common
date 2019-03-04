@@ -16,7 +16,6 @@ def get_log_stream(log_group_name, log_stream_name, region=DEFAULT_REGION):
         logStreamNamePrefix=log_stream_name,
     )
     try:
-        LOGGER.info(response)
         log_streams = response["logStreams"]
         for stream in log_streams:
             if log_stream_name == stream["logStreamName"]:

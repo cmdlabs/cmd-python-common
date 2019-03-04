@@ -7,6 +7,7 @@ import importlib
 from pyspark.sql import SparkSession
 from pyspark.sql.types import StringType
 from pyspark.sql import functions as F
+from runcmd import s3
 from runcmd.logging_helper import get_logger
 
 LOGGER = get_logger(__name__)
@@ -18,7 +19,6 @@ class NoRecordFoundParquet(Exception):
     """
     Customer exception for no records found in Parquet.
     """
-    pass
 
 def driver():
     """
@@ -98,6 +98,25 @@ def write_to_parquet(spark, dataframe, path, glue_table=None, mode="overwrite", 
         operation.option("path", path).saveAsTable(glue_table)
     else:
         operation.save(path)
+
+def write_to_csv(dataframe, bucket, prefix):
+    """
+    Writes a dataframe to a single CSV file.
+    """
+    if dataframe.count() == 0:
+        raise NoRecordFoundParquet("No results to save.  This is an error condition")
+
+    s3_path = "s3://%s/%s" % (bucket, prefix)
+    LOGGER.info("Writing dataframe to csv %s." % (s3_path))
+    dataframe.repartition(1).write.mode("overwrite").format("csv").save("%s-tmp" % s3_path)
+    s3_elements = s3.list_items_with_prefix(bucket, "%s-tmp" % prefix)
+    success = False
+    for element in s3_elements:
+        if element.key.endswith("csv") and element.size > 0:
+            s3.move(bucket, element.key, bucket, prefix)
+            success = True
+    if not success:
+        raise Exception("Unable to locate temporary file for movement: %s" % s3_elements)
 
 def convert_string_to_timestamp(input_df, input_column, output_column, ts_format):
     """

@@ -3,7 +3,10 @@ Utility functions for EMR.
 """
 import logging
 import json
-import StringIO
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 import time
 from argparse import ArgumentParser
 from runcmd.logging_helper import get_logger
@@ -27,7 +30,7 @@ def generate_args(inputs):
     Generates arguements for the input to the call.
     """
     parser = ArgumentParser()
-    for key, value in inputs.iteritems():
+    for key, value in inputs.items():
         if isinstance(value, list):
             parser.add_argument(key, help=value[0], required=value[1])
         else:

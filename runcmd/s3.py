@@ -33,7 +33,7 @@ def copy(source_bucket, source_prefix, target_bucket, target_prefix, # pylint: d
     LOGGER.info("Coyping object from bucket s3://%s/%s to s3://%s/%s" \
              % (source_bucket, source_prefix, target_bucket, target_prefix))
     payload = {
-        "target_bucket": target_bucket,
+        "Bucket": target_bucket,
         "CopySource": {
             "Bucket": source_bucket,
             "Key": source_prefix
@@ -86,15 +86,14 @@ def does_key_exist(s3_bucket, key, region=DEFAULT_REGION):
     Checks if a key exists in a bucket.
     """
     try:
-        response = get_resource("s3", region=region).Object(s3_bucket, key).load()
-        LOGGER.info("Checking if key %s in bucket %s exists: %s" % (s3_bucket, key, response))
+        response = get_resource("s3", region=region).Object(s3_bucket, key).content_length
+        LOGGER.info("Checking if key %s in bucket %s length: %s" % (key, s3_bucket, response))
         return response
     except ClientError as exp:
         LOGGER.info("Error finding S3 key s3://%s/%s: %s" % (s3_bucket, key, exp))
         if exp.response['Error']['Code'] == "404":
             return False
-        else:
-            raise exp
+        raise exp
 
 def does_folder_exist(s3_bucket, key, region=DEFAULT_REGION):
     """
