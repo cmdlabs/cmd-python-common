@@ -4,8 +4,9 @@ runCMD library to support Apache Spark
 import sys
 import traceback
 import importlib
+from flatten_json import flatten
+from pyspark.sql.types import StructType, StructField, StringType, BooleanType, LongType
 from pyspark.sql import SparkSession
-from pyspark.sql.types import StringType
 from pyspark.sql import functions as F
 from runcmd import s3
 from runcmd.logging_helper import get_logger
@@ -153,3 +154,26 @@ def union_datasets(ds_1, ds_2):
     if ds_1:
         return ds_1.union(ds_2)
     return ds_2
+
+
+def create_schema_from_dict(data, flatten_dict=True):
+    """
+    Takes a dict (or array of dict's and uses the first in the list)
+    and returns the StructType schema used for spark createDataFrame()
+    """
+    schema = []
+    sample = data[:1].pop() if isinstance(data, list) else data
+    if not isinstance(sample, dict):
+        return None
+
+    sample = flatten(sample) if flatten_dict else sample
+    for key, value in sample.items():
+        if isinstance(value) is int:
+            schema.append(StructField(key, LongType(), True))
+        elif isinstance(value) is bool:
+            schema.append(StructField(key, BooleanType(), True))
+        elif isinstance(value, dict):
+            schema.append(StructType(create_schema_from_dict(value, flatten_dict=flatten_dict)))
+        else:
+            schema.append(StructField(key, StringType(), True))
+    return StructType(schema)

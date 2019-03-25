@@ -62,7 +62,8 @@ setup(
         'boto3==1.9.62',
         'pyspark==2.4.0',
         'pandas==0.23.4',
-        'requests==2.21.0'
+        'requests==2.21.0',
+        'flatten_json==0.1.6'
     ],
     cmdclass={
         'verify': VerifyVersionCommand,
