@@ -168,10 +168,10 @@ def create_schema_from_dict(data, flatten_dict=True):
 
     sample = flatten(sample) if flatten_dict else sample
     for key, value in sample.items():
-        if isinstance(value) is int:
-            schema.append(StructField(key, LongType(), True))
-        elif isinstance(value) is bool:
+        if isinstance(value, bool):  # bool takes precedence when inferecing types like this
             schema.append(StructField(key, BooleanType(), True))
+        elif isinstance(value, int):
+            schema.append(StructField(key, LongType(), True))
         elif isinstance(value, dict):
             schema.append(StructType(create_schema_from_dict(value, flatten_dict=flatten_dict)))
         else:
