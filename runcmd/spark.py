@@ -119,6 +119,17 @@ def write_to_csv(dataframe, bucket, prefix):
     if not success:
         raise Exception("Unable to locate temporary file for movement: %s" % s3_elements)
 
+
+def load_csv_from_s3(spark, item_path, header='true', infer_schema='true', delimiter=','):
+    """
+    Loads CSV files from S3.
+    """
+    return spark.read \
+            .option("header", header) \
+            .option("inferSchema", infer_schema) \
+            .option("sep", delimiter) \
+            .csv(item_path)
+
 def convert_string_to_timestamp(input_df, input_column, output_column, ts_format):
     """
     Converting a string column to a timestamp.
