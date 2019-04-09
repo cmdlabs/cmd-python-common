@@ -28,7 +28,7 @@ Installing a local environment to support this library is done as follows:
 * Install conda.
 * Create a new environment with python 2.7 (currently that is the version of python that spark supports).
 * Install this library (see below instructions for Alpha Build).
-* Import the spark libraries as specified in [environment.yml](environment.yml).
+* Import the spark libraries as specified in [requirements.txt](requirements.txt).
 
 ## Alpha Build
 

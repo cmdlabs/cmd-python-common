@@ -5,14 +5,14 @@ from setuptools.command.install import install
 
 VERSION = "1.0.4"
 
-if os.environ.get('CI_COMMIT_TAG'):
+if os.environ.get('CIRCLE_TAG'):
     print("Versioned Release")
-    CI_VERSION = os.environ.get('CI_COMMIT_TAG')
+    CI_VERSION = os.environ.get('CIRCLE_TAG')
     IS_CI_BUILD = True
     IS_VERSION_BUILD = True
-elif os.environ.get('CI_JOB_ID'):
+elif os.environ.get('CIRCLE_BUILD_NUM'):
     print("Beta Release")
-    CI_VERSION = "%sb%s" % (VERSION, os.environ.get('CI_JOB_ID'))
+    CI_VERSION = "%sb%s" % (VERSION, os.environ.get('CIRCLE_BUILD_NUM'))
     IS_CI_BUILD = True
     IS_VERSION_BUILD = False
 else:
