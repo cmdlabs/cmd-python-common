@@ -36,23 +36,17 @@ To build the package you need to have the following `freetds` installed to allow
 
 On OSX run the following:
 
-    ```bash
     brew unlink freetds;
     brew install freetds@0.91
     brew link --force --overwrite freetds@0.91
-    ```
 
 To then build the python library run the following.
 
-    ```bash
     ./local_build.sh
-    ```
 
 To perform linting (which will be done a commit) run the following command:
 
-    ```bash
     pylint --rcfile=pydistutils.cfg runcmd
-    ```
 
 ## Beta Build
 
@@ -65,7 +59,5 @@ Released versions use a version that matches the tags applied to the repository.
 1. Change the version number value of the variable `VERSION` in `setup.py` as `1.0.0`.
 2. Then we need to create a tag and push it git repo.
 
-        ```bash
         git tag '1.0.0'
         git push --tags
-        ```

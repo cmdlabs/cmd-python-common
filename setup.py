@@ -3,7 +3,7 @@ import sys
 from setuptools import find_packages, setup
 from setuptools.command.install import install
 
-VERSION = "1.0.3"
+VERSION = "1.0.4"
 
 # Version number is described at https://www.python.org/dev/peps/pep-0440.
 if os.environ.get('CI_COMMIT_TAG'):
