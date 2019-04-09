@@ -19,6 +19,7 @@ jobs:
       - run:
           name: install dependencies
           command: |
+            sudo deb http://deb.debian.org/debian stretch-backports main
             sudo apt-get -t stretch-backports install python-pymssql
             python3 -m venv venv
             . venv/bin/activate
