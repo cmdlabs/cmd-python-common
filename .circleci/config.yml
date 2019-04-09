@@ -22,7 +22,7 @@ jobs:
             sudo apt-get install freetds-dev
             python3 -m venv venv
             . venv/bin/activate
-            pip install -r requirements.txt
+            python3 -m pip install -q -r requirements.txt
 
       - save_cache:
           paths:
@@ -39,8 +39,8 @@ jobs:
           name: Build
           command: |
             . venv/bin/activate
-            python setup.py build
-            python setup.py install sdist bdist_wheel
+            python3 setup.py build
+            python3 setup.py install sdist bdist_wheel
 
       - store_artifacts:
           path: dist
