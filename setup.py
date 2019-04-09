@@ -5,22 +5,23 @@ from setuptools.command.install import install
 
 VERSION = "1.0.4"
 
-# Version number is described at https://www.python.org/dev/peps/pep-0440.
 if os.environ.get('CI_COMMIT_TAG'):
-    # Versioned Release
+    print("Versioned Release")
     CI_VERSION = os.environ.get('CI_COMMIT_TAG')
     IS_CI_BUILD = True
     IS_VERSION_BUILD = True
 elif os.environ.get('CI_JOB_ID'):
-    # Beta Release
-    CI_VERSION = "%s.b%s" % (VERSION, os.environ.get('CI_JOB_ID'))
+    print("Beta Release")
+    CI_VERSION = "%sb%s" % (VERSION, os.environ.get('CI_JOB_ID'))
     IS_CI_BUILD = True
     IS_VERSION_BUILD = False
 else:
-    # Alpha Release
-    CI_VERSION = "%s.a" % VERSION
+    print("Alpha Release - Local Development Environment")
+    CI_VERSION = "%sa0" % VERSION
     IS_CI_BUILD = False
     IS_VERSION_BUILD = False
+
+print("Using version %s." % CI_VERSION)
 
 def readme():
     """print long description"""
@@ -55,7 +56,7 @@ setup(
     description="CMD commoun python modules and function used for all the client projects",
     long_description=readme(),
     packages=find_packages(exclude=['contrib', 'docs', 'tests', 'dist', 'dependencies']),
-    url='https://gitlab.runcmd.cmdsolutions.com.au/cmd-modules/cmd-python-common',
+    url='https://github.com/cmdlabs/cmd-python-common',
     author='CMD Solutions',
     author_email='sales@cmdsolutiosn.com.au',
     install_requires=[
